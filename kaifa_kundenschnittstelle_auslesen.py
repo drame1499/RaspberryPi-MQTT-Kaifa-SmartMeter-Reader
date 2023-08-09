@@ -5,6 +5,7 @@ import binascii
 import datetime
 import serial
 from Crypto.Cipher import AES
+import paho.mqtt.client as mqtt
 
 
 
@@ -26,17 +27,19 @@ key=binascii.unhexlify(key)
 
 # Daten in Logdatei schreiben
 logging = 1 # wenn > 0 dann Logdatei schreiben
+useMQTT = True
 
-def recv(serial):
+def recv(serial): 
     while True:
+	# Reads all currently available data - not blocking
         data = serial.read_all()
-        if data == '':
+        if data == '': #empty read -> try again
             print ("\n...")
             continue
         else:
             #print ("\n...lausche auf Schnittstelle")
             break
-        sleep(6)
+        sleep(6) #should never get executed, either continue or break in the if 
     return data
 
 	
